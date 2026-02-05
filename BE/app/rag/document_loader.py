@@ -60,32 +60,60 @@ class DocumentLoader:
 
     def load(self) -> List[Document]:
         documents = []
+        policy_files = []
+        
+        # First, collect all policy files and sort by year
         for file in os.listdir(self.base_path):
-            if file.endswith(".txt"):
-                path = os.path.join(self.base_path, file)
-                with open(path, "r", encoding="utf-8") as f:
-                    content = f.read()
-                
-                # Extract comprehensive metadata
-                metadata = self._extract_metadata(file, content)
-                
-                # Create document with original metadata
-                doc = Document(
-                    page_content=content,
-                    metadata=metadata
-                )
-                
-                # Split document into chunks
-                chunks = self.text_splitter.split_documents([doc])
-                
-                # Add chunk-specific metadata
-                for i, chunk in enumerate(chunks):
-                    chunk.metadata.update({
-                        "chunk_id": i,
-                        "total_chunks": len(chunks),
-                        "char_count": len(chunk.page_content),
-                        "chunk_source": f"{file}_chunk_{i}"
-                    })
-                    documents.append(chunk)
-                    
+            if file.endswith(".txt") and "policy" in file.lower():
+                year_match = re.search(r'(\d{4})', file)
+                if year_match:
+                    year = int(year_match.group(1))
+                    policy_files.append((file, year))
+        
+        # Sort by year (newest first) and only keep the latest policy
+        policy_files.sort(key=lambda x: x[1], reverse=True)
+        
+        if not policy_files:
+            print("❌ No policy files found in knowledge base!")
+            return documents
+        
+        # Only load the latest policy file
+        latest_policy_file, latest_year = policy_files[0]
+        print(f"📋 Loading only the latest policy: {latest_policy_file} ({latest_year})")
+        
+        # Skip older policies
+        if len(policy_files) > 1:
+            skipped_files = [f"{file} ({year})" for file, year in policy_files[1:]]
+            print(f"⏭️ Skipping older policies: {', '.join(skipped_files)}")
+        
+        # Load only the latest policy file
+        path = os.path.join(self.base_path, latest_policy_file)
+        with open(path, "r", encoding="utf-8") as f:
+            content = f.read()
+        
+        # Extract comprehensive metadata
+        metadata = self._extract_metadata(latest_policy_file, content)
+        metadata["is_latest_policy"] = True
+        
+        # Create document with original metadata
+        doc = Document(
+            page_content=content,
+            metadata=metadata
+        )
+        
+        # Split document into chunks
+        chunks = self.text_splitter.split_documents([doc])
+        
+        # Add chunk-specific metadata
+        for i, chunk in enumerate(chunks):
+            chunk.metadata.update({
+                "chunk_id": i,
+                "total_chunks": len(chunks),
+                "char_count": len(chunk.page_content),
+                "chunk_source": f"{latest_policy_file}_chunk_{i}",
+                "is_latest_policy": True
+            })
+            documents.append(chunk)
+        
+        print(f"✅ Loaded {len(documents)} chunks from latest policy: {latest_policy_file}")
         return documents

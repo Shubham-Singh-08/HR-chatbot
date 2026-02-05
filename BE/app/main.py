@@ -146,9 +146,9 @@ def query_policy(req: QueryRequest):
 
         retrieved = [
             RetrievedDoc(
-                filename="",  # Hide filename information
+                filename=doc.metadata.get('filename', 'Unknown'),
                 score=1.0
-            ) for d in docs
+            ) for doc in docs
         ]
 
         return QueryResponse(
