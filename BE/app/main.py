@@ -14,7 +14,7 @@ app = FastAPI(title="TechCorp HR RAG")
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],  # React dev server
+    allow_origins=["http://localhost:3001", "http://127.0.0.1:3001"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
