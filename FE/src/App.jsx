@@ -77,9 +77,9 @@ export default function App() {
             {/* Sample Questions */}
             <div className="grid md:grid-cols-3 gap-4 mb-8">
               {[
-                "What is the vacation policy?",
-                "How do I request time off?",
-                "What are the working hours?"
+                "What is the WFH policy?",
+                "What's on the cafe menu today?",
+                "How many days per week do I need to work in office?"
               ].map((question, index) => (
                 <button
                   key={index}
