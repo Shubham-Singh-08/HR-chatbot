@@ -1,7 +1,7 @@
 from langchain_openai import AzureChatOpenAI
 from app.config import settings
 
-class GeminiLLM:
+class OpenAiLLM:
     def __init__(self):
         self.llm = AzureChatOpenAI(
             deployment_name="gpt-35-turbo",

@@ -5,7 +5,7 @@ from app.rag.document_loader import DocumentLoader
 from app.rag.embedding_service import EmbeddingService
 from app.rag.vector_store import VectorStore
 from app.rag.retriever import PolicyRetriever
-from app.rag.llm_service import GeminiLLM
+from app.rag.llm_service import OpenAiLLM
 from app.rag.rag_pipeline import RAGPipeline
 from app.config import settings
 
@@ -46,7 +46,7 @@ vector_db = vector_store_service.create(documents)
 print(f"✅ Fresh vector store created with {len(documents)} documents")
 
 retriever = PolicyRetriever(vector_db)
-llm = GeminiLLM().get()
+llm = OpenAiLLM().get()
 pipeline = RAGPipeline(retriever, llm)
 
 @app.get("/")
