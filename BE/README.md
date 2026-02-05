@@ -143,7 +143,7 @@ npm run dev
 class Settings:
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT") 
-    KNOWLEDGE_BASE_PATH = "data"  # Path to your documents
+    KNOWLEDGE_BASE_PATH = "knowledge_base"
     EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 ```
 
