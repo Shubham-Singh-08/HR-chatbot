@@ -4,6 +4,7 @@ langchain
 langchain-core
 langchain-community
 langchain-openai
+langchain-text-splitters
 chromadb
 sentence-transformers
 pydantic

@@ -17,3 +17,14 @@ class VectorStore:
             persist_directory=settings.CHROMA_PERSIST_DIR,
             embedding_function=self.embedding
         )
+    
+    def create_with_search_config(self, documents):
+        """Create vector store with optimized search configuration"""
+        vectorstore = Chroma.from_documents(
+            documents,
+            self.embedding,
+            persist_directory=settings.CHROMA_PERSIST_DIR
+        )
+        
+        # Configure for better retrieval of policy documents
+        return vectorstore

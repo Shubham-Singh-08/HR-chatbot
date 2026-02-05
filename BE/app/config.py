@@ -9,6 +9,6 @@ class Settings:
     AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-01")
     CHROMA_PERSIST_DIR = "chroma_db"
     EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-    KNOWLEDGE_BASE_PATH = "data"
+    KNOWLEDGE_BASE_PATH = "knowledge_base"  # Updated to use knowledge_base folder
 
 settings = Settings()
